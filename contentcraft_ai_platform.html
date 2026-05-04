@@ -1,0 +1,498 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;900&family=Tajawal:wght@400;500;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --brand: #1a1a2e;
+    --accent: #e94560;
+    --accent2: #0f3460;
+    --gold: #f5a623;
+    --surface: #16213e;
+    --card: #1a2744;
+    --border: rgba(255,255,255,0.08);
+    --text: #f0f0f0;
+    --muted: rgba(240,240,240,0.55);
+    --radius: 16px;
+    --font: 'Cairo', sans-serif;
+  }
+  body { background: var(--brand); color: var(--text); font-family: var(--font); direction: rtl; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    padding: 3rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(233,69,96,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .logo {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 22px; font-weight: 900; letter-spacing: -0.5px;
+    margin-bottom: 2.5rem;
+  }
+  .logo-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(233,69,96,0.15);
+    border: 1px solid rgba(233,69,96,0.4);
+    color: #ff8099;
+    font-size: 12px; font-weight: 500;
+    padding: 4px 14px; border-radius: 20px;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.5px;
+  }
+  .hero h1 {
+    font-size: 2.6rem; font-weight: 900; line-height: 1.2;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p { font-size: 1rem; color: var(--muted); max-width: 520px; margin: 0 auto 2rem; line-height: 1.7; font-family: 'Tajawal', sans-serif; }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    border: none; padding: 14px 28px; border-radius: 10px;
+    font-family: var(--font); font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary:hover { background: #c73350; transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border); padding: 14px 28px; border-radius: 10px;
+    font-family: var(--font); font-size: 15px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.05); }
+
+  .stats-bar {
+    display: flex; justify-content: center; gap: 40px;
+    padding: 1.5rem 2rem; background: rgba(255,255,255,0.03);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 1.5rem; font-weight: 900; color: var(--accent); }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: 'Tajawal', sans-serif; }
+
+  .section { padding: 3rem 1.5rem; max-width: 720px; margin: 0 auto; }
+  .section-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 0.4rem; }
+  .section-sub { font-size: 14px; color: var(--muted); margin-bottom: 2rem; font-family: 'Tajawal', sans-serif; }
+
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .tool-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem;
+    cursor: pointer; transition: all 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .tool-card:hover { border-color: rgba(233,69,96,0.4); transform: translateY(-2px); background: #1e2e50; }
+  .tool-card.active { border-color: var(--accent); background: rgba(233,69,96,0.08); }
+  .tool-icon { font-size: 26px; margin-bottom: 10px; }
+  .tool-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .tool-desc { font-size: 12px; color: var(--muted); line-height: 1.5; font-family: 'Tajawal', sans-serif; }
+  .tool-badge {
+    position: absolute; top: 10px; left: 10px;
+    background: var(--gold); color: #1a1a2e;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 6px;
+  }
+
+  .demo-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem; margin-top: 1.5rem;
+  }
+  .demo-label { font-size: 12px; color: var(--muted); margin-bottom: 8px; font-family: 'Tajawal', sans-serif; }
+  .demo-input {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px;
+    color: var(--text); font-family: var(--font); font-size: 14px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .demo-input:focus { border-color: var(--accent); }
+  .demo-options { display: flex; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
+  .opt-chip {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 5px 12px;
+    font-size: 12px; color: var(--muted); cursor: pointer; transition: all 0.2s;
+    font-family: 'Tajawal', sans-serif;
+  }
+  .opt-chip:hover, .opt-chip.sel { background: rgba(233,69,96,0.15); border-color: var(--accent); color: #ff8099; }
+  .gen-btn {
+    width: 100%; background: var(--accent); color: #fff;
+    border: none; padding: 13px; border-radius: 10px;
+    font-family: var(--font); font-size: 15px; font-weight: 700;
+    cursor: pointer; margin-top: 10px; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .gen-btn:hover { background: #c73350; }
+  .gen-btn:active { transform: scale(0.98); }
+
+  .output-area {
+    margin-top: 14px; background: var(--surface);
+    border-radius: 10px; padding: 14px;
+    min-height: 80px; font-size: 13px; line-height: 1.7;
+    font-family: 'Tajawal', sans-serif; color: var(--text);
+    display: none;
+    border: 1px solid rgba(233,69,96,0.2);
+  }
+  .output-area.show { display: block; }
+  .typing::after { content: '|'; animation: blink 0.7s infinite; color: var(--accent); }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+  .plan {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem; text-align: center; position: relative;
+  }
+  .plan.featured {
+    border-color: var(--accent);
+    background: linear-gradient(160deg, rgba(233,69,96,0.1), var(--card));
+  }
+  .plan-popular {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: #fff;
+    font-size: 11px; font-weight: 700; padding: 3px 14px; border-radius: 10px;
+    white-space: nowrap;
+  }
+  .plan-name { font-size: 13px; color: var(--muted); margin-bottom: 8px; font-family: 'Tajawal', sans-serif; }
+  .plan-price { font-size: 2rem; font-weight: 900; line-height: 1; }
+  .plan-price span { font-size: 13px; font-weight: 400; color: var(--muted); }
+  .plan-features { list-style: none; margin: 1rem 0; text-align: right; }
+  .plan-features li { font-size: 12px; color: var(--muted); padding: 4px 0; font-family: 'Tajawal', sans-serif; display: flex; align-items: center; gap: 6px; }
+  .plan-features li::before { content: '✓'; color: #4ade80; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .plan-btn {
+    width: 100%; padding: 10px; border-radius: 8px;
+    font-family: var(--font); font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; margin-top: 4px;
+  }
+  .plan-btn.outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .plan-btn.outline:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+  .plan-btn.filled { background: var(--accent); color: #fff; border: none; }
+  .plan-btn.filled:hover { background: #c73350; }
+
+  .how-steps { display: flex; flex-direction: column; gap: 12px; }
+  .step {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.1rem 1.25rem;
+  }
+  .step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(233,69,96,0.15); border: 1px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900; color: var(--accent); flex-shrink: 0;
+  }
+  .step-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .step-desc { font-size: 12px; color: var(--muted); line-height: 1.5; font-family: 'Tajawal', sans-serif; }
+
+  .nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.75rem 1.5rem; background: rgba(15,12,41,0.95);
+    border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
+  }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-link {
+    font-size: 12px; color: var(--muted); padding: 6px 12px; border-radius: 8px;
+    cursor: pointer; transition: all 0.15s; font-weight: 500;
+    background: transparent; border: none; font-family: var(--font);
+  }
+  .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.07); color: var(--text); }
+  .nav-cta {
+    background: var(--accent); color: #fff;
+    border: none; padding: 7px 16px; border-radius: 8px;
+    font-family: var(--font); font-size: 12px; font-weight: 700; cursor: pointer;
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 0 1.5rem; }
+  .footer { text-align: center; padding: 1.5rem; font-size: 11px; color: var(--muted); font-family: 'Tajawal', sans-serif; }
+</style>
+
+<h2 class="sr-only" style="position:absolute;left:-9999px">منصة ContentCraft AI - منصة إنشاء المحتوى بالذكاء الاصطناعي</h2>
+
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-icon">✦</div>
+    ContentCraft AI
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showSection('tools')">الأدوات</button>
+    <button class="nav-link" onclick="showSection('how')">كيف يعمل؟</button>
+    <button class="nav-link" onclick="showSection('pricing')">الأسعار</button>
+  </div>
+  <button class="nav-cta" onclick="sendPrompt('أريد معرفة المزيد عن هذا الموقع وكيف أبدأ')">ابدأ مجاناً</button>
+</nav>
+
+<div id="page-tools">
+  <div class="hero">
+    <div class="badge">مدعوم بالذكاء الاصطناعي ✦</div>
+    <h1>أنشئ محتوى <span>احترافياً</span><br>في ثوانٍ</h1>
+    <p>المنصة الأولى عربياً لصناع المحتوى المبتدئين — أفكار، سكريبتات، كابشنات، هاشتاقات، وأكثر، كلها بضغطة زر.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="sendPrompt('كيف أبدأ استخدام ContentCraft AI كمبتدئ في صناعة المحتوى؟')">ابدأ الآن مجاناً ←</button>
+      <button class="btn-ghost" onclick="showSection('how')">كيف يعمل؟</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">+50K</div><div class="stat-label">صانع محتوى</div></div>
+    <div class="stat"><div class="stat-num">+1M</div><div class="stat-label">محتوى تم إنشاؤه</div></div>
+    <div class="stat"><div class="stat-num">15+</div><div class="stat-label">أداة ذكاء اصطناعي</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">تقييم المستخدمين</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">الأدوات المتاحة</div>
+    <div class="section-sub">اختر الأداة المناسبة لاحتياجك وأنشئ محتوى احترافياً على الفور</div>
+    <div class="tools-grid" id="tools-grid">
+      <div class="tool-card active" onclick="selectTool(this, 'idea')">
+        <div class="tool-icon">💡</div>
+        <div class="tool-name">توليد الأفكار</div>
+        <div class="tool-desc">أفكار محتوى لأسبوع كامل بناءً على مجالك</div>
+      </div>
+      <div class="tool-card" onclick="selectTool(this, 'caption')">
+        <div class="tool-icon">✍️</div>
+        <div class="tool-name">كتابة الكابشن</div>
+        <div class="tool-desc">كابشنات جذابة لإنستغرام وتيك توك</div>
+        <div class="tool-badge">شائع</div>
+      </div>
+      <div class="tool-card" onclick="selectTool(this, 'script')">
+        <div class="tool-icon">🎬</div>
+        <div class="tool-name">سكريبت الفيديو</div>
+        <div class="tool-desc">سكريبت كامل لفيديو يوتيوب أو ريلز</div>
+      </div>
+      <div class="tool-card" onclick="selectTool(this, 'hashtag')">
+        <div class="tool-icon">#</div>
+        <div class="tool-name">الهاشتاقات</div>
+        <div class="tool-desc">هاشتاقات مستهدفة لزيادة الوصول</div>
+      </div>
+      <div class="tool-card" onclick="selectTool(this, 'bio')">
+        <div class="tool-icon">👤</div>
+        <div class="tool-name">البايو</div>
+        <div class="tool-desc">بايو احترافي لجميع المنصات</div>
+      </div>
+      <div class="tool-card" onclick="selectTool(this, 'hook')">
+        <div class="tool-icon">⚡</div>
+        <div class="tool-name">الهوك الجذاب</div>
+        <div class="tool-desc">أول 3 ثواني تحدد نجاح المحتوى</div>
+        <div class="tool-badge">جديد</div>
+      </div>
+    </div>
+
+    <div class="demo-box">
+      <div class="demo-label" id="demo-label">أدخل مجالك أو موضوع المحتوى</div>
+      <input class="demo-input" id="demo-input" placeholder="مثال: طبخ، لياقة، تقنية، سفر..." />
+      <div class="demo-options">
+        <span class="opt-chip sel" onclick="selChip(this,'انستقرام')">انستقرام</span>
+        <span class="opt-chip" onclick="selChip(this,'تيك توك')">تيك توك</span>
+        <span class="opt-chip" onclick="selChip(this,'يوتيوب')">يوتيوب</span>
+        <span class="opt-chip" onclick="selChip(this,'تويتر X')">تويتر X</span>
+      </div>
+      <button class="gen-btn" onclick="generateContent()">
+        <span id="gen-label">✦ توليد بالذكاء الاصطناعي</span>
+      </button>
+      <div class="output-area" id="output-area"></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-how" style="display:none">
+  <div class="section">
+    <div class="section-title">كيف تبدأ في ثلاث خطوات؟</div>
+    <div class="section-sub">لا تحتاج إلى خبرة — فقط اتبع الخطوات</div>
+    <div class="how-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div><div class="step-title">أنشئ حسابك مجاناً</div><div class="step-desc">سجل في ثوانٍ بالبريد الإلكتروني أو حساب جوجل. لا تحتاج إلى بطاقة بنكية للبدء.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div><div class="step-title">اختر أداة المحتوى المناسبة</div><div class="step-desc">من الأفكار إلى السكريبت الكامل — اختر ما تحتاجه وأدخل مجالك باللغة العربية أو الإنجليزية.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div><div class="step-title">انسخ ونشر</div><div class="step-desc">احصل على المحتوى الجاهز فوراً، عدّله كما تشاء، وانشره على منصاتك. بهذه البساطة!</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div><div class="step-title">تطور مع الوقت</div><div class="step-desc">تعلم من تقارير الأداء واقتراحات الذكاء الاصطناعي المخصصة لك — المنصة تتعلم أسلوبك وتحسّن توصياتها.</div></div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top: 2rem;">
+      <button class="btn-primary" onclick="showSection('tools')">جرّب الآن مجاناً ←</button>
+    </div>
+  </div>
+</div>
+
+<div id="page-pricing" style="display:none">
+  <div class="section">
+    <div class="section-title">خطط الاشتراك</div>
+    <div class="section-sub">ابدأ مجاناً وطوّر وصفك مع نموك</div>
+    <div class="pricing-grid">
+      <div class="plan">
+        <div class="plan-name">مجاني</div>
+        <div class="plan-price">0 <span>ريال/شهر</span></div>
+        <ul class="plan-features">
+          <li>5 توليدات يومياً</li>
+          <li>3 أدوات أساسية</li>
+          <li>دعم عبر البريد</li>
+          <li>قوالب محدودة</li>
+        </ul>
+        <button class="plan-btn outline" onclick="sendPrompt('أريد الاشتراك في الخطة المجانية')">ابدأ مجاناً</button>
+      </div>
+      <div class="plan featured">
+        <div class="plan-popular">الأكثر شيوعاً</div>
+        <div class="plan-name">احترافي</div>
+        <div class="plan-price">49 <span>ريال/شهر</span></div>
+        <ul class="plan-features">
+          <li>توليدات غير محدودة</li>
+          <li>جميع الأدوات 15+</li>
+          <li>دعم أولوية 24/7</li>
+          <li>قوالب متميزة</li>
+          <li>تقارير الأداء</li>
+          <li>تخصيص الأسلوب</li>
+        </ul>
+        <button class="plan-btn filled" onclick="sendPrompt('أريد الاشتراك في الخطة الاحترافية بـ 49 ريال')">اشترك الآن</button>
+      </div>
+      <div class="plan">
+        <div class="plan-name">وكالة</div>
+        <div class="plan-price">149 <span>ريال/شهر</span></div>
+        <ul class="plan-features">
+          <li>5 حسابات فرعية</li>
+          <li>كل مميزات Pro</li>
+          <li>API متاح</li>
+          <li>تقارير متقدمة</li>
+          <li>مدير حساب مخصص</li>
+        </ul>
+        <button class="plan-btn outline" onclick="sendPrompt('أريد الاشتراك في خطة الوكالة')">تواصل معنا</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+<div class="footer">صُمّم لصناع المحتوى العرب المبتدئين ✦ ContentCraft AI © 2025</div>
+
+<script>
+const toolData = {
+  idea: {
+    label: 'أدخل مجالك أو تخصصك',
+    placeholder: 'مثال: طبخ منزلي، رياضة، ديكور...',
+    outputs: [
+      '💡 أفكار محتوى لأسبوع كامل في مجال الطبخ:\n\n1️⃣ "3 وصفات سريعة للإفطار في 10 دقائق"\n2️⃣ "سر الأمهات في عجينة الخبز الهشة"\n3️⃣ "تحدي: أطبخ وجبة بـ 20 ريال فقط"\n4️⃣ "أخطاء يرتكبها الجميع في الطبخ"\n5️⃣ "وصفة كلاسيكية بلمسة عصرية"\n6️⃣ "يوم في مطبخي - وراء الكواليس"\n7️⃣ "اسأل الشيف - إجابات أسئلتكم"',
+      '💡 أفكار محتوى تقني لأسبوع:\n\n1️⃣ "أفضل 5 تطبيقات لزيادة إنتاجيتك"\n2️⃣ "هذا الاختصار سيوفر عليك ساعة يومياً"\n3️⃣ "مقارنة: آيفون ضد أندرويد 2025"\n4️⃣ "كيف تحمي خصوصيتك أونلاين"\n5️⃣ "أدوات مجانية لصناع المحتوى"\n6️⃣ "مراجعة آخر إصدار"\n7️⃣ "سؤال وجواب: أجيب على أسئلتكم التقنية"'
+    ]
+  },
+  caption: {
+    label: 'صف صورتك أو موضوع المنشور',
+    placeholder: 'مثال: صورة قهوة الصباح، منظر طبيعي...',
+    outputs: [
+      '✍️ كابشنات جاهزة للاستخدام:\n\n🔥 قصير وجذاب:\n"الصباح ما يكتمل إلا بكوب قهوة ☕ أنتم؟"\n\n💬 للتفاعل:\n"بين الشخص الصباحي والليلي، أنت فين؟ قولي في الكومنت 👇"\n\n📖 قصة قصيرة:\n"كل يوم نفس الروتين، لكن هذا الكوب يختلف — فيه طاقة البداية وعزيمة الاستمرار ✨"',
+    ]
+  },
+  script: {
+    label: 'موضوع الفيديو ومدته',
+    placeholder: 'مثال: فيديو 60 ثانية عن فوائد القراءة...',
+    outputs: [
+      '🎬 سكريبت فيديو 60 ثانية - "فوائد القراءة":\n\n[HOOK - 0-5 ثواني]\n"هل تعلم أن 20 دقيقة قراءة يومياً تغير عقلك كلياً؟"\n\n[المحتوى - 5-45 ثانية]\n"أولاً: القراءة تقوي الذاكرة بشكل علمي مثبت. ثانياً: تقلل التوتر بنسبة 68%. ثالثاً: تطور أسلوبك في الكلام والكتابة."\n\n[CTA - 45-60 ثانية]\n"ابدأ بكتاب واحد هذا الشهر — وشاركنا في الكومنت عنوانه 📚"\n\n[نص ظهور] كتاب مفتوح + أيقونة دماغ'
+    ]
+  },
+  hashtag: {
+    label: 'موضوع أو مجال المحتوى',
+    placeholder: 'مثال: لياقة بدنية، يوغا، تغذية...',
+    outputs: [
+      '# هاشتاقات مُحسّنة للوصول الأعلى:\n\n🔴 ترند (ملايين المشاهدات):\n#لياقة #تمرين #صحة\n\n🟡 متوسطة (مئات الآلاف):\n#لياقة_بدنية #تمارين_يومية #تغذية_صحية\n\n🟢 متخصصة (آلاف - منافسة أقل):\n#تمرين_المنزل #لياقة_عربية #رحلتي_الرياضية\n\n✅ النصيحة: استخدم 3 من كل فئة للنتيجة المثلى'
+    ]
+  },
+  bio: {
+    label: 'مجالك وما تقدمه',
+    placeholder: 'مثال: مدرب لياقة، باحثة تقنية...',
+    outputs: [
+      '👤 خيارات بايو جاهزة:\n\n🎯 مباشر وواضح:\n"مدرب لياقة بدنية 💪 | ساعدت +200 شخص يحققون أهدافهم | تمارين يومية + نظام غذائي مجاني ⬇️"\n\n✨ قصصي:\n"بدأت رحلتي من الصفر وأصبحت مدرباً معتمداً | هنا أشارككم كل ما تعلمته 🏋️"\n\n💼 احترافي:\n"Coach | Fitness & Nutrition | DM للاستفسار | linktr.ee/username"'
+    ]
+  },
+  hook: {
+    label: 'موضوع المحتوى',
+    placeholder: 'مثال: نصائح توفير المال، طبخ سريع...',
+    outputs: [
+      '⚡ هوكات قوية تجذب الانتباه:\n\n😱 صدمة:\n"90% من الناس لا يعرفون هذا عن توفير المال!"\n\n❓ سؤال مثير:\n"إيش تعمل لو عندك 1000 ريال فاضل نهاية الشهر؟"\n\n📊 رقم صادم:\n"وفّرت 10,000 ريال في 6 أشهر — هذا سر الطريقة"\n\n🤫 تشويق:\n"في تقنية بسيطة يستخدمها الأثرياء لادخار المال... وما أحد يتكلم عنها"'
+    ]
+  }
+};
+
+let currentTool = 'idea';
+let selectedPlatform = 'انستقرام';
+
+function selectTool(el, tool) {
+  document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentTool = tool;
+  const d = toolData[tool];
+  document.getElementById('demo-label').textContent = d.label;
+  document.getElementById('demo-input').placeholder = d.placeholder;
+  document.getElementById('output-area').classList.remove('show');
+}
+
+function selChip(el, val) {
+  document.querySelectorAll('.opt-chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  selectedPlatform = val;
+}
+
+function generateContent() {
+  const input = document.getElementById('demo-input').value;
+  const label = document.getElementById('gen-label');
+  const out = document.getElementById('output-area');
+  
+  label.textContent = '⏳ جاري التوليد...';
+  out.classList.remove('show');
+  
+  setTimeout(() => {
+    const data = toolData[currentTool];
+    const text = data.outputs[Math.floor(Math.random() * data.outputs.length)];
+    out.textContent = '';
+    out.classList.add('show');
+    
+    let i = 0;
+    out.classList.add('typing');
+    const interval = setInterval(() => {
+      if (i < text.length) {
+        out.textContent += text[i++];
+        if (i % 30 === 0) out.scrollTop = out.scrollHeight;
+      } else {
+        out.classList.remove('typing');
+        label.textContent = '✦ توليد بالذكاء الاصطناعي';
+        clearInterval(interval);
+      }
+    }, 12);
+  }, 1200);
+}
+
+function showSection(name) {
+  ['tools','how','pricing'].forEach(s => {
+    const el = document.getElementById('page-' + s);
+    if(el) el.style.display = s === name ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.textContent.includes(
+      name === 'tools' ? 'الأدوات' : name === 'how' ? 'كيف' : 'الأسعار'
+    ));
+  });
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
